@@ -5,7 +5,7 @@ version=10
 clean_up=0 # don't clean up by default
 ds_factor=1 # don't downsample by default
 reg_stages=3 # three-step registration by default
-targ_vox_size=1 # target voxel size equal 1
+targ_vox_size=1 # target voxel size equals 1
 manual_edits=${SUBJECTS_DIR}/manual_edits
 LF=${SUBJECTS_DIR}/tmp.log
 
@@ -141,7 +141,8 @@ echo "
 
 # Freesurfer autorecon1 stage
 cd ${SUBJECTS_DIR}
-source ${FREESURFER_HOME}/startfreesurfer
+source ${FREESURFER_HOME}/SetUpFreeSurfer.sh
+
 recon-all -s ${subject} -i ${manual_edits}/hires/fakeT1_final.mgz -motioncor -hires
 
 # Add the previous log messages to recon-all.log
@@ -259,7 +260,7 @@ mri_convert ${manual_edits}/hires/fakeT1_final.mgz -ds ${ds_factor} ${ds_factor}
 
 recon-all.v6.hires -s ${subject} -conf2hires
 
-# Remove the symlinks created by conf2hires (not needed)
+# Remove the symlinks created by conf2hires (not used)
 echo >> ${LF}
 echo "Removed:" >> ${LF}
 rm -v ${subject}/surf/lh.white 2>&1 | tee -a ${LF}
@@ -279,7 +280,7 @@ echo >> ${LF}
 mv -v ${subject}/mri/rawavg_bak.mgz ${subject}/mri/rawavg.mgz 2>&1 | tee -a ${LF}
 echo >> ${LF}
 echo "Removed:" >> ${LF}
-rm -v ${subject}/mri/rawavg.*.mgz 2>&1 | tee -a ${LF} # remove the mess of conf2hires
+rm -v ${subject}/mri/rawavg.*.mgz 2>&1 | tee -a ${LF} # remove some unused output from conf2hires
 echo >> ${LF}
 
 echo "
@@ -311,10 +312,14 @@ surfs=(sphere sphere.reg qsphere.nofix curv curv.pial thickness area area.mid ar
 hemispheres=(lh rh)
 for surf in ${surfs[@]}
 do
-	for hemi in ${hemispheres[@]}
+	
+  for hemi in ${hemispheres[@]}
 	do
-		cp -v ${subject}_fakehdr/surf/${hemi}.${surf} ${subject}/surf/${hemi}.${surf} 2>&1 | tee -a ${LF}
-	done
+		
+    cp -v ${subject}_fakehdr/surf/${hemi}.${surf} ${subject}/surf/${hemi}.${surf} 2>&1 | tee -a ${LF}
+	
+  done
+
 done
 
 echo >> ${LF}
@@ -451,7 +456,7 @@ echo "
 recon-all -s ${subject} -smooth2 -inflate2 -curvHK -curvstats
 
 # Rest of autorecon3
-recon-all -s ${subject} -autorecon3 -nopial # skip pial because we already have it
+recon-all -s ${subject} -autorecon3 -nopial # skip pial because it is already created
 
 # Clean up
 if [[ "${clean_up}" -eq 1 ]]
@@ -463,7 +468,7 @@ then
 	echo >> ${LF}
 fi
 
-awk -v t=$SECONDS 'BEGIN{t=int(t*1000); printf "Total processing time: %02d h %02d min %02d s.\n", t/3600000, t/60000%60, t/1000%60}' >> ${LF}
+awk -v t=$SECONDS 'BEGIN{t=int(t*1000); printf "Total processing time: %02d h %02d min %02d s.\n", t/3600000, t/60000%60, t/1000%60}' 2>&1 | tee -a ${LF}
 
 echo "
 ###########################################

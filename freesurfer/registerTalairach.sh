@@ -33,8 +33,9 @@ Optional arguments
 
 For the two- and three-step registrations, pre-calculated warps can be
 used (e.g. from chimpanzee to Talairach or from NMT to Talairach) to
-save computational resources. The script will automatically skip these
-steps if existing warps are found in the output directory. "
+save computational time. The script will automatically skip these
+steps if existing warps are found in the output directory.
+"
 
 }
 

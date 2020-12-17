@@ -5,12 +5,13 @@ function rescaleAnnotations(subjectsDir, subject, originalVolume, processedVolum
 %   RESCALEANNOTATIONS(subjectsDir, subject, originalVolume) rescales
 %   ?h.curv, ?h.curv.pial, ?h.thickness, ?h.area, ?h.area.mid,
 %   ?h.area.pial, ?h.volume, and ?h.cortex based on the difference between
-%   voxel sizes in sourceVol and targetVol.
+%   voxel sizes in originalVolume and processedVolume.
 %
 %   Input arguments:
 %   subjectsDir       FreeSurfer subjects directory [string]
 %   subject           FreeSurfer subject [string]
 %   originalVolume    path to original volume [string]
+%   processedVolume   path to processed volume [string]
 %
 %   Dirk Jan Ardesch, VU Amsterdam
 
