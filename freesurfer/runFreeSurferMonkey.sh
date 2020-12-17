@@ -34,7 +34,6 @@ This script assumes the following paths are set in the environment:
 SUBJECTS_DIR:     directory where the FreeSurfer output will be saved.
 SHARED_DIR:       directory where shared files are stored (e.g. transforms).
 SCRIPTS_DIR:      directory where the additional scripts are located.
-ANTS_PATH:        directory where the ANTs binaries are located.
 "
 }
 
