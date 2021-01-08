@@ -127,7 +127,7 @@ mkdir -v ${manual_edits}/hires >> ${LF}
 
 cd ${SCRIPTS_DIR}
 matlab -nodisplay -nosplash -r "try, changeVoxelSize('${manual_edits}', \
-{'fakeT1_final.mgz', 'aseg.presurf.mgz', 'aseg.auto_noCCseg.mgz', 'wm.asegedit.mgz', 'filled.mgz'}, \
+{'inputT1.mgz', 'aseg.presurf.mgz', 'aseg.auto_noCCseg.mgz', 'wm.asegedit.mgz', 'filled.mgz'}, \
 '${manual_edits}/hires', ${hires_vox_size}), catch, end, quit"
 echo "Changed voxel size in header of images in ${manual_edits}/hires to ${hires_vox_size} mm." >> ${LF}
 
@@ -142,7 +142,7 @@ echo "
 cd ${SUBJECTS_DIR}
 source ${FREESURFER_HOME}/SetUpFreeSurfer.sh
 
-recon-all -s ${subject} -i ${manual_edits}/hires/fakeT1_final.mgz -motioncor -hires
+recon-all -s ${subject} -i ${manual_edits}/hires/inputT1.mgz -motioncor -hires
 
 # Add the previous log messages to recon-all.log
 cat ${subject}/scripts/recon-all.log >> ${LF}
@@ -150,7 +150,7 @@ mv ${LF} ${subject}/scripts/recon-all.log
 LF=${subject}/scripts/recon-all.log
 
 # Get original volume in FreeSurfer space
-recon-all -s ${subject}_tmp -i ${manual_edits}/fakeT1_final.mgz -motioncor -hires 2>&1 | tee -a ${LF}
+recon-all -s ${subject}_tmp -i ${manual_edits}/inputT1.mgz -motioncor -hires 2>&1 | tee -a ${LF}
 mri_convert ${subject}_tmp/mri/orig.mgz ${subject}/mri/orig_native.nii.gz 2>&1 | tee -a ${LF}
 
 echo >> ${LF}
@@ -252,9 +252,9 @@ echo "
 ###########################################
 " >> ${LF}
 
-# Downsample fakeT1_hires so that the voxel size becomes the target voxel size, and use as 'fake' rawavg.mgz.
+# Downsample inputT1_hires so that the voxel size becomes the target voxel size, and use as 'fake' rawavg.mgz.
 mv -v ${subject}/mri/rawavg.mgz ${subject}/mri/rawavg_bak.mgz 2>&1 | tee -a ${LF}
-mri_convert ${manual_edits}/hires/fakeT1_final.mgz -ds ${ds_factor} ${ds_factor} ${ds_factor} \
+mri_convert ${manual_edits}/hires/inputT1.mgz -ds ${ds_factor} ${ds_factor} ${ds_factor} \
 --conform ${subject}/mri/rawavg.mgz 2>&1 | tee -a ${LF}
 
 recon-all.v6.hires -s ${subject} -conf2hires
