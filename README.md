@@ -19,8 +19,8 @@ Collection of scripts based on FreeSurfer for cortical reconstruction of small n
 ```
 export FREESURFER_HOME=/path/to/your/FreeSurfer/installation
 export SUBJECTS_DIR=/path/to/desired/FreeSurfer/output
-export SHARED_DIR=/path/to/nhp-freesurfer-main/shared
-export SCRIPTS_DIR=/path/to/nhp-freesurfer-main/freesurfer
+export SHARED_DIR=/path/to/nhp-freesurfer/shared
+export SCRIPTS_DIR=/path/to/nhp-freesurfer/freesurfer
 ```
 * Then, do a first run to create a skullstripped input file and several segmentations that will likely need some manual edits. These steps are described in the createManualEditFiles.sh script (if you already have these files, put them in a folder called 'manual_edits' in SUBJECTS_DIR and skip this step)
 * Finally, run the main script:
